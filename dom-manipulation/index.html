@@ -1,52 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Quote Generator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Quote Generator (with Storage & JSON Import/Export)</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background: #f4f4f4;
+      background: #f7fafc;
     }
     #quoteDisplay {
       margin: 20px 0;
       padding: 15px;
       background: white;
       border-left: 4px solid #555;
-      font-size: 1.2rem;
-      min-height: 40px;
+      font-size: 1.1rem;
+      min-height: 48px;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
-    .form-section {
-      margin-top: 30px;
+    .controls, .form-section {
+      margin-top: 16px;
       background: white;
       padding: 15px;
-      border-radius: 6px;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
+    .controls > * { margin-right: 8px; }
+    input[type="text"] { padding: 8px; margin-right: 8px; width: 240px; }
+    button { padding: 8px 12px; cursor: pointer; }
+    small { color: #666; display:block; margin-top:8px;}
   </style>
 </head>
 <body>
-
   <h1>Dynamic Quote Generator</h1>
 
-  <!-- Quote section -->
   <div id="quoteDisplay">Click "Show New Quote" to begin.</div>
 
-  <!-- Category selector -->
   <label for="categorySelect"><strong>Select Category:</strong></label>
   <select id="categorySelect"></select>
 
-  <button id="newQuote">Show New Quote</button>
-
-  <!-- Add quote form -->
-  <div class="form-section">
-    <h3>Add a New Quote</h3>
-    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
-    <button id="addQuoteBtn">Add Quote</button>
+  <div class="controls">
+    <button id="newQuote">Show New Quote</button>
+    <button id="exportBtn">Export Quotes (JSON)</button>
+    <input type="file" id="importFile" accept=".json" />
+    <button id="clearStorageBtn" title="Remove all saved quotes from localStorage">Clear Saved Quotes</button>
+    <small>Session last quote: <span id="sessionLast">—</span></small>
   </div>
+
+  <!-- form will be created dynamically by createAddQuoteForm() -->
+  <div id="formPlaceholder" class="form-section"></div>
 
   <script src="script.js"></script>
 </body>
 </html>
+
