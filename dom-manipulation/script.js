@@ -126,7 +126,7 @@ function importFromJsonFile(event) {
 ========================= */
 const serverEndpoint = "https://jsonplaceholder.typicode.com/posts"; // mock API
 
-async function fetchServerQuotes() {
+async function fetchQuotesFromServer() {
   try {
     const response = await fetch(serverEndpoint);
     const serverData = await response.json();
@@ -157,7 +157,7 @@ async function fetchServerQuotes() {
 }
 
 // Sync every 30 seconds
-setInterval(fetchServerQuotes, 30000);
+setInterval(fetchQuotesFromServer, 30000);
 
 /* =========================
     CREATE FORM DYNAMICALLY
