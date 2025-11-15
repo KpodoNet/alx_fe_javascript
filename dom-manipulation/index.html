@@ -27,35 +27,22 @@
       border-radius: 8px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
-    .controls > * {
-      margin-right: 8px;
-    }
-    input[type="text"] {
-      padding: 8px;
-      margin: 6px 0;
-      width: 250px;
-      display: block;
-    }
-    button {
-      padding: 8px 12px;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-    small {
-      color: #666;
-    }
+    .controls > * { margin-right: 8px; }
+    input[type="text"] { padding: 8px; margin: 6px 0; width: 250px; display: block; }
+    button { padding: 8px 12px; cursor: pointer; margin-top: 8px; }
+    small { color: #666; display:block; margin-top:10px; }
   </style>
 </head>
 
 <body>
   <h1>Dynamic Quote Generator</h1>
 
-  <!-- Display random quote here -->
+  <!-- Quote display -->
   <div id="quoteDisplay">Click "Show New Quote" to begin.</div>
 
-  <!-- Category Filter -->
-  <label for="categorySelect"><strong>Select Category:</strong></label>
-  <select id="categorySelect"></select>
+  <!-- Category filter -->
+  <label for="categoryFilter"><strong>Select Category:</strong></label>
+  <select id="categoryFilter"></select>
 
   <!-- Controls -->
   <div class="controls">
@@ -64,17 +51,12 @@
     <button id="exportBtn">Export Quotes (JSON)</button>
     <input type="file" id="importFile" accept=".json" />
 
-    <button id="clearStorageBtn" title="Remove all saved quotes from localStorage">
-      Clear Saved Quotes
-    </button>
+    <button id="clearStorageBtn">Clear Saved Quotes</button>
 
-    <small>
-      Session last quote:
-      <span id="sessionLast">—</span>
-    </small>
+    <small>Session last quote: <span id="sessionLast">—</span></small>
   </div>
 
-  <!-- Add Quote Form (Created dynamically by JS) -->
+  <!-- Add Quote Form (injected by JS) -->
   <div id="formPlaceholder" class="form-section"></div>
 
   <script src="script.js"></script>

@@ -1,22 +1,22 @@
-// Retrieve quotes from localStorage or default to []
+// Retrieve quotes from localStorage
 let quotes = JSON.parse(localStorage.getItem("quotes")) || [];
 
-/* ============================================================
-    DOM REFERENCES
-============================================================ */
+/* -----------------------------
+   DOM References
+------------------------------ */
 const quoteDisplay = document.getElementById("quoteDisplay");
-const categorySelect = document.getElementById("categorySelect");
+const categoryFilter = document.getElementById("categoryFilter");
 const newQuoteBtn = document.getElementById("newQuote");
 const importFile = document.getElementById("importFile");
 const exportBtn = document.getElementById("exportBtn");
 const sessionLast = document.getElementById("sessionLast");
 const formPlaceholder = document.getElementById("formPlaceholder");
 
-/* ============================================================
-    STEP A: Populate Category Options
-============================================================ */
+/* ----------------------------------------------------
+   Populate Category Dropdown
+---------------------------------------------------- */
 function populateCategories() {
-  categorySelect.innerHTML = `<option value="all">All Categories</option>`;
+  categoryFilter.innerHTML = `<option value="all">All Categories</option>`;
 
   const uniqueCategories = [...new Set(quotes.map(q => q.category))];
 
@@ -24,53 +24,52 @@ function populateCategories() {
     const opt = document.createElement("option");
     opt.value = cat;
     opt.textContent = cat;
-    categorySelect.appendChild(opt);
+    categoryFilter.appendChild(opt);
   });
 
-  // Restore saved filter
   const savedFilter = localStorage.getItem("selectedCategory");
   if (savedFilter) {
-    categorySelect.value = savedFilter;
+    categoryFilter.value = savedFilter;
   }
 }
 
-/* ============================================================
-    STEP B: Show Random Quote (filtered)
-============================================================ */
+/* ----------------------------------------------------
+   Show Random Quote (Based on Filter)
+---------------------------------------------------- */
 function showRandomQuote() {
-  let selectedCategory = categorySelect.value;
+  const selectedCategory = categoryFilter.value;
 
-  let filtered = selectedCategory === "all"
+  const filteredQuotes = selectedCategory === "all"
     ? quotes
     : quotes.filter(q => q.category === selectedCategory);
 
-  if (filtered.length === 0) {
+  if (filteredQuotes.length === 0) {
     quoteDisplay.textContent = "No quotes found for this category.";
     return;
   }
 
-  const randomQuote = filtered[Math.floor(Math.random() * filtered.length)];
+  const randomQuote =
+    filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)];
 
   quoteDisplay.innerHTML = `
     "${randomQuote.text}"<br>
     <small>- ${randomQuote.author || "Unknown"}</small>
   `;
 
-  // Save last viewed quote in session storage
   sessionStorage.setItem("lastQuote", randomQuote.text);
   sessionLast.textContent = randomQuote.text;
 }
 
-/* ============================================================
-    STEP C: Save Quotes to LocalStorage
-============================================================ */
+/* ----------------------------------------------------
+   Save Quotes
+---------------------------------------------------- */
 function saveQuotes() {
   localStorage.setItem("quotes", JSON.stringify(quotes));
 }
 
-/* ============================================================
-    STEP D: Add Quote Form (Dynamic)
-============================================================ */
+/* ----------------------------------------------------
+   Create Add Quote Form
+---------------------------------------------------- */
 function createAddQuoteForm() {
   formPlaceholder.innerHTML = `
     <h3>Add a New Quote</h3>
@@ -82,9 +81,9 @@ function createAddQuoteForm() {
 }
 createAddQuoteForm();
 
-/* ============================================================
-    STEP E: Add Quote Logic
-============================================================ */
+/* ----------------------------------------------------
+   Add Quote
+---------------------------------------------------- */
 function addQuote() {
   const text = document.getElementById("quoteText").value.trim();
   const author = document.getElementById("quoteAuthor").value.trim();
@@ -105,26 +104,26 @@ function addQuote() {
   document.getElementById("quoteCategory").value = "";
 }
 
-/* ============================================================
-    STEP F: Filter Quotes (updates state + saves)
-============================================================ */
+/* ----------------------------------------------------
+   Filter Quotes
+---------------------------------------------------- */
 function filterQuotes() {
-  localStorage.setItem("selectedCategory", categorySelect.value);
+  localStorage.setItem("selectedCategory", categoryFilter.value);
   showRandomQuote();
 }
 
-/* ============================================================
-    STEP G: Import Quotes from JSON
-============================================================ */
-importFile.onchange = function(event) {
+/* ----------------------------------------------------
+   Import JSON
+---------------------------------------------------- */
+importFile.onchange = function (event) {
   const reader = new FileReader();
 
-  reader.onload = function(e) {
+  reader.onload = function (e) {
     try {
       const imported = JSON.parse(e.target.result);
 
       if (!Array.isArray(imported)) {
-        alert("Invalid JSON format: expected an array");
+        alert("Invalid JSON format.");
         return;
       }
 
@@ -140,14 +139,17 @@ importFile.onchange = function(event) {
   reader.readAsText(event.target.files[0]);
 };
 
-/* ============================================================
-    STEP H: Export Quotes to JSON
-============================================================ */
+/* ----------------------------------------------------
+   Export JSON
+---------------------------------------------------- */
 exportBtn.onclick = function () {
-  const blob = new Blob([JSON.stringify(quotes, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
+  const blob = new Blob([JSON.stringify(quotes, null, 2)], {
+    type: "application/json",
+  });
 
+  const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
+
   a.href = url;
   a.download = "quotes.json";
   a.click();
@@ -155,27 +157,26 @@ exportBtn.onclick = function () {
   URL.revokeObjectURL(url);
 };
 
-/* ============================================================
-    STEP I: Clear LocalStorage
-============================================================ */
-document.getElementById("clearStorageBtn").onclick = function() {
+/* ----------------------------------------------------
+   Clear LocalStorage
+---------------------------------------------------- */
+document.getElementById("clearStorageBtn").onclick = () => {
   localStorage.removeItem("quotes");
   quotes = [];
   populateCategories();
   quoteDisplay.textContent = "All saved quotes cleared.";
 };
 
-/* ============================================================
-    INIT ON LOAD
-============================================================ */
+/* ----------------------------------------------------
+   Initialize App
+---------------------------------------------------- */
 window.onload = () => {
   populateCategories();
   filterQuotes();
 
-  // Load last quote from session
-  const last = sessionStorage.getItem("lastQuote");
-  sessionLast.textContent = last || "—";
+  const lastQuote = sessionStorage.getItem("lastQuote");
+  sessionLast.textContent = lastQuote || "—";
 };
 
 newQuoteBtn.onclick = showRandomQuote;
-categorySelect.onchange = filterQuotes;
+categoryFilter.onchange = filterQuotes;
