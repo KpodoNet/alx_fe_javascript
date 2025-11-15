@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dynamic Quote Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Quote Generator (Full Feature)</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -16,7 +16,7 @@
       background: white;
       border-left: 4px solid #555;
       font-size: 1.1rem;
-      min-height: 48px;
+      min-height: 80px;
       border-radius: 6px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
@@ -27,53 +27,39 @@
       border-radius: 8px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
-    .controls > * { margin-right: 8px; }
-    input[type="text"] { padding: 8px; margin: 6px 0; width: 250px; display: block; }
-    button { padding: 8px 12px; cursor: pointer; margin-top: 8px; }
-    small { color: #666; display:block; margin-top:10px; }
+    .controls > * { margin-right: 8px; margin-top: 4px; }
+    input[type="text"], select { padding: 8px; margin-right: 8px; width: 220px; margin-top: 4px; }
+    button { padding: 8px 12px; cursor: pointer; margin-top: 4px; }
+    small { color: #666; display:block; margin-top:8px;}
+    .category-label { font-size: 0.85rem; color: #0077cc; }
   </style>
 </head>
-
 <body>
   <h1>Dynamic Quote Generator</h1>
 
-  <!-- Quote display -->
+  <!-- Display random/filtered quote -->
   <div id="quoteDisplay">Click "Show New Quote" to begin.</div>
 
-  <!-- Category filter -->
-  <label for="categoryFilter"><strong>Select Category:</strong></label>
+  <!-- Category Filter -->
+  <label for="categoryFilter"><strong>Filter by Category:</strong></label>
   <select id="categoryFilter"></select>
 
   <!-- Controls -->
   <div class="controls">
     <button id="newQuote">Show New Quote</button>
-
     <button id="exportBtn">Export Quotes (JSON)</button>
     <input type="file" id="importFile" accept=".json" />
-
-    <button id="clearStorageBtn">Clear Saved Quotes</button>
-
+    <button id="clearStorageBtn" title="Remove all saved quotes from localStorage">Clear Saved Quotes</button>
     <small>Session last quote: <span id="sessionLast">—</span></small>
   </div>
 
-  <!-- Add Quote Form (injected by JS) -->
+  <!-- Form placeholder (dynamically created by JS) -->
   <div id="formPlaceholder" class="form-section"></div>
 
   <script src="script.js"></script>
-  
-<div id="notificationBox" 
-     style="
-        background:#333;
-        color:white;
-        padding:10px;
-        border-radius:6px;
-        position:fixed;
-        top:20px;
-        right:20px;
-        opacity:0;
-        transition:0.3s;
-     ">
-</div>
+</body>
+</html>
+
 
 
 
